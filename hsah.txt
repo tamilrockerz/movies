@@ -1,3 +1,4 @@
+//normal hash
 #include<stdio.h>
 #include<stdlib.h>
 int array[100],n;
