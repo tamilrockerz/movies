@@ -1,0 +1,60 @@
+//normal selection sort
+#include<stdio.h>
+
+void selection(int array[],int size);
+void swap(int *a, int *b);
+
+int main()
+{
+  int p;
+  printf("Enter the size of the array \n");
+  scanf("%d",&p);
+
+  int data[p];
+  printf("Enter the elements to be stored in the array \n");
+  for(int i=0;i<p;i++)
+  {
+    scanf("%d",&data[i]);
+  }
+
+  selection(data, p);
+
+  printf("\n The Sorted array in Ascending order are \n");
+  for (int i = 0; i < p; ++i) 
+  {
+    printf("%d  ", data[i]);
+  }
+  printf("\n");
+  return 0;
+}  
+
+void selection(int array[], int size) 
+{
+  printf("Sorting takes place \n");
+  for (int a = 0; a < size - 1; a++) 
+  {
+    int min = a;
+    
+    for (int i = a + 1; i < size; i++) 
+    {
+      if (array[i] < array[min])
+        min = i;
+    }
+    printf("Minimum element is %d",array[min]);
+
+    swap(&array[min], &array[a]);
+    
+    printf("\n Step %d : \n",a);
+      for(int x=0;x<size;x++)
+      {
+        printf(" \n %d  \n",array[x]);
+      }
+  }
+}
+
+void swap(int *a, int *b) 
+{
+  int temp = *a;
+  *a = *b;
+  *b = temp;
+}
