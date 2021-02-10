@@ -1,0 +1,224 @@
+/*consider a hash function that distributes keys uniformly.the hash table size is 20.if the load factor increases above 0.5 then performing rehashing
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define null 0
+#define occupied 1 
+#define deleted 2 
+#define maxLen 8191
+
+typedef struct cell
+{
+    int key;
+    short flag;
+} Cell;
+
+void insert(Cell a, Cell copy, int key);
+int search(Cell* a, int key);
+void delete(Cell* a, int key);
+void rehash(Cell* a, Cell* copy);
+int nextPrime(int n);
+int isPrime(int n);
+
+int buckets = 20;
+int filled = 0;
+float alpha = 0.0;
+
+int main()
+{
+    int i, total, val;
+    printf("\nHashing with linear probing\n");
+     printf("_____________________\n\n");
+
+    Cell *hashTable, *copy;
+    hashTable = malloc(buckets * sizeof(Cell));
+    for (i = 0; i < buckets; i++)
+    {
+        hashTable[i].key = -100;
+        hashTable[i].flag = null;
+    }
+
+    printf("Initially:\n");
+    printf("1. Number of buckets = %d\n",buckets);
+    printf("2. Load factor (alpha) = %4.2f\n", alpha);
+    printf("_____________________\n\n");
+    printf("Enter the number of values to be hashed in the table.\n");
+    scanf("%d",&total);
+    scanf(time(NULL));
+
+    for (i = 0; i < total; i++)
+    {
+        int temp = rand() % maxLen;
+        
+        insert(hashTable, copy, temp);
+        
+    }
+    printf("\n");
+    printf("Following is a list of operation and the respective commands:\n\n");
+    printf(" 1. Insert - i\n 2. Search - s\n 3. Delete - d\n 4. Exit - e\n\n");
+    char option;
+    while(1)
+    {
+        scanf("%c",&option);
+        if (option == 'e')
+        {
+            break;
+        }
+        else if (option == 'i')
+        {
+            printf("Please enter the value to be inserted : ");
+            scanf("%d",&val);
+            insert(hashTable, copy, val);
+            printf("\n");
+        }
+        else if (option == 's')
+        {
+            printf("Please enter the value to be searched : ");
+            scanf("%d",&val);
+            search(hashTable, val);
+            printf("\n");
+        }
+        else if (option == 'd')
+        {
+            printf("Please enter the value to be deleted : ");
+            scanf("%d",&val);
+            delete(hashTable, val);
+            printf("\n");
+        }
+    }
+    free(hashTable);
+    return(0);
+}
+
+void insert(Cell a, Cell copy, int key)    
+{
+    int lt, rt, shift, hashKey;
+    alpha = (float)(filled + 1)/buckets;
+    if (alpha >= 0.5) { rehash(a, copy); }
+
+    lt = hashKey = key % buckets;
+    printf("Key = %4d  Hashed at = %4d  ", key, lt);
+
+    while (a[hashKey].flag == occupied)
+    {
+        if (a[hashKey].key == key)
+        {
+            printf("Key already present in table at %4d.\n",hashKey);
+            return;
+        }
+        hashKey = (hashKey + 1) % buckets;
+    }
+    rt = hashKey;
+    a[hashKey].key = key;
+    a[hashKey].flag = occupied;
+    if (rt >= lt) shift = rt - lt;
+    else          shift = buckets - lt + rt;
+
+    printf("Placed at = %4d  Shift = %4d\n", rt, shift);
+    filled++;
+    alpha = (float)filled/buckets;
+    return;
+}
+
+int search(Cell* a, int key)
+{
+    int hashKey = key % buckets;
+    while (a[hashKey].flag != null)
+    {
+        if (a[hashKey].key == key)
+        {
+            if (a[hashKey].flag == occupied)
+            {
+                printf("Element found in table at position %d.\n", hashKey);
+                return hashKey;
+            }
+            else
+            {
+                printf("Element not found in table.\n");
+                return -1;
+            }
+        }
+        hashKey = (hashKey + 1)% buckets;
+    }
+    printf("Element not found in table.\n");
+    return -1;
+}
+
+void delete(Cell* a, int key)
+{
+    int hashKey = search(a, key);
+    if (hashKey == -1) return;
+    a[hashKey].flag = deleted;
+    filled--;
+    alpha = (float)filled/buckets;
+    printf("Element has been deleted from the table.\n");
+    return;
+}
+
+void rehash(Cell* a, Cell* copy)
+{
+    if (buckets == maxLen)
+    {
+        printf("Table size cannot exceed 8191.\n");
+        return;
+    }
+    int i = 0, temp = 0, count = 0, num = buckets, hashKey;
+    buckets = nextPrime(2*num);
+    printf("_____________________\n\n");
+    printf("Due to load factor(alpha) exceeding 0.5, table resized to %d\n\n",buckets);
+
+    copy = malloc(buckets * sizeof(Cell));
+    for (i = 0; i < buckets; i++)
+    {
+        copy[i].key = -100;
+        copy[i].flag = null;
+    }
+
+    for (i = 0; i < num; i++)
+    {
+        if(a[i].flag != occupied)
+        {
+            
+
+            continue;
+        }
+        temp = a[i].key;
+        hashKey = temp % buckets;
+        while (copy[hashKey].flag == occupied)
+        {
+            hashKey = (hashKey + 1) % buckets;
+        }
+        copy[hashKey].key = temp;
+        copy[hashKey].flag = occupied;
+        count++;
+      
+    }
+    free(a);
+    a = malloc(buckets * sizeof(Cell));
+    for (i = 0; i < buckets; i++)
+    {
+        a[i].key = -100;
+        a[i].flag = null;
+    }
+    a = copy;
+    free(copy);
+    filled = count;
+    alpha = (float)filled/buckets;
+}
+
+int nextPrime(int n)
+{
+    int num = n+1;  
+    while(!isPrime(num)) num += 2;
+    return num;
+}
+
+int isPrime(int n)
+{
+    int i = 0;
+    int a = sqrt(n);
+    for (i = 3; i <= a; i++)
+        if (n % i == 0) return 0;
+    return 1;
+}
