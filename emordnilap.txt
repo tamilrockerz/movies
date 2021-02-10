@@ -1,0 +1,80 @@
+/*palindrome using stack */
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#define SIZE 50
+
+char stack[SIZE];
+
+int Top =-1;
+
+void push(char item)
+{
+	if( Top >= SIZE-1 )
+	 printf("\nStack Overflow.\n");
+	else
+	 stack[++Top] = item; 
+}
+char pop()
+{
+	char item;
+	if( Top < 0 )
+	{
+		printf("\nStack underflow: Invalid Expression\n");
+	}
+	else
+	{
+		item = stack[Top--];
+		return(item);
+	}
+}
+int isEmpty()
+{
+	if( Top == -1 )
+	 return 1;
+	else
+	 return 0; 
+}
+int Polindrome(char exp[])
+{
+	int i=0,flag = 0;
+	char item;
+	while(exp[i]!='\0')
+	{
+		if( (exp[i]!='x') && flag == 0)
+		{
+			push(exp[i]);
+		    i++;
+			continue;
+		}
+		else if( exp[i]=='x' )
+		 flag = 1;
+		else
+		{
+			item = pop();
+
+			if( exp[i] != item )
+			 {
+		
+			   return 0;
+		    }
+		}
+	  i++;		
+	}
+	if(isEmpty() == 1)
+	 return 1;
+	else
+	 return 0; 
+}
+
+int main()
+{
+   char exp[SIZE];
+   printf("Please, Enter the expression.\n");
+   scanf("%s",exp);
+   if( Polindrome(exp) == 1 )
+    printf("'%s' is a polindrome string.\n",exp);
+   else
+    printf("'%s' is not a polindrome string.\n",exp);
+return 0;
+}
