@@ -1,0 +1,87 @@
+/*operations of stack using array */
+#include<stdio.h>
+#define stack 10
+int arr[stack];
+static int top=-1;
+int isFull(){
+	if(top==stack-1)
+	return 1;
+	return 0;
+}
+int isEmpty(){
+	if(top==-1)
+	return 1;
+	return 0;
+}
+void print(){
+	printf(" the stack values are :");
+	if(top==-1){
+		printf(" the stack is empty");
+	}
+	else{
+	for(int i=0;i<=top;i++)
+	 printf("  %d",arr[i]);
+}
+}
+Void return_top(){
+Printf("the top pointer value is %d",top);
+}
+
+void push(int num){
+	if(isFull()){
+		printf("the stack is already full no more insertion is possible");
+	}
+	else{
+	top+=1;
+	arr[top]=num;
+	printf("\nafter insertion");
+   	print();
+}
+}
+void pop(){
+	if(isEmpty()){
+		printf("the stak is empty no more deletion is possible");
+	}
+	else{
+		printf("\nbefore deletion");
+		print();
+		printf("\nnumber %d is deleted ",arr[top]);
+		top-=1;
+		printf("\n after deletion");
+		print();
+	}
+}
+int main(){
+   int n,choice,itr=1;
+while(itr==1){
+   printf("the stack operations are :\n\t\t1.push\n\t\t2.pop\n\t\t3.Display\n\t\t4.Return top pointeryour choice :  ");
+   scanf("%d",&choice);
+   switch(choice){
+   	case 1:{
+   		printf("\n\nenter number to be inserted :");
+   		scanf("%d",&n);
+   		push(n);
+		break;
+	   }
+	case 2:{
+		pop();
+		break;
+	}
+	case 3:{
+		print();
+		break;
+	}
+	Case 4:{
+             return_top();
+           break;
+}
+
+	default:
+		printf("enter correct number");
+   }
+   printf("\n\n press 1 to continue : ");
+   scanf("%d",&itr);
+}
+	
+	return 0;
+}
