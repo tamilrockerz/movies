@@ -1,0 +1,132 @@
+/*operations in minheap */
+#include <stdio.h>
+#include <stdlib.h>
+int Arr[100],n;
+void delete();
+void insert_heap(int,int);
+void print(int*,int);
+void search(int);
+int main(void)
+{
+ 
+int s,a,value;
+n=0;
+int ch=1;
+while(ch==1)
+{
+  printf("Operations in min heap\n");
+  printf("_______________________\n");
+  printf(" \n 1.Insert\n 2.Delete\n 3.Display\n 4.Search\n 5.Exit :");
+  scanf("%d",&a);
+switch(a)
+{
+  case 1:
+  printf(" Enter the value to be inerted in the heap\n");
+  scanf("%d",&value);
+  insert_heap(n,value);
+  n=n+1;
+  break;
+ 
+  case 2:
+  delete();
+  break;
+ 
+  case 3:
+  printf(" After insertion the heap is: ");
+  print(Arr,n);
+  break;
+ 
+  case 4:
+  printf(" Enter the element to be searched\n");
+  scanf("%d",&s);
+  search(s);
+  break;
+ 
+  case 5:
+  exit(1);
+  defalut:
+  printf("INVALID!!\n");
+}
+printf("\n Do you want to continue 1.yes 2.No :");
+scanf("%d",&ch);
+}
+}
+ 
+void insert_heap(int n,int value)
+{
+int parent;
+while(n>0) 
+{
+  parent = (n-1)/2;
+    if(Arr[parent]<=value)
+    {
+      Arr[n]=value;
+      return;
+    }
+Arr[n]=Arr[parent];
+n = parent;
+}
+Arr[0]=value;
+}
+void print(int a[],int n)
+{
+  for(int i=0;i<n;i++)
+  {
+    printf("%d ",a[i]);
+  }
+}
+ 
+void delete()
+{
+  int deleted,last,empt,left,right;
+  printf("The minimum element %d is deleted successfully\n",Arr[0]);
+  deleted = Arr[0];
+  last = Arr[n-1];
+  n=n-1;
+  empt=0;
+  left=1;
+  right=2;
+  while(right<=n)
+  {
+    if(last<=Arr[left]&&last<=Arr[right])
+    {
+      Arr[empt]=last;
+      return;
+    }
+    else if(Arr[left]<=Arr[right])
+    {
+      Arr[empt]=Arr[left];
+      empt=left;
+    }
+    else 
+    {
+      Arr[empt]=Arr[right];
+      empt=right;
+  }
+left=2*empt+1;
+right=2*empt+2;
+}
+if(left == n && last > Arr[left])
+{
+  Arr[empt]=Arr[left];
+  empt=left;
+}
+Arr[empt]=last;
+}
+ 
+void search(int element)
+{
+  int flag=1;
+  for(int i=0;i<n;i++)
+  {
+    if(element==Arr[i])
+    {
+      printf("The element is found in the Tree\n");
+      flag++;
+    }
+  }
+  if(flag==1)
+  {
+      printf("Element is not found\n");
+  } 
+}
