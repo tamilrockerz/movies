@@ -1,0 +1,287 @@
+/*Consider a linked list with same elements .Ifconsider a linked list with some elements ,if an element is deleted from a list ,insert it into another list in FIFO manner.*/
+#include <stdio.h>
+#include <stdlib.h>
+void Append();
+void Addatbegin();
+void Addatafter();
+void Delete();
+int length();
+void Display();
+void search();
+struct node
+{
+  int data;
+  struct node* link;
+};
+struct node* front=0;
+struct node* rear=0;
+void Insert1(int);
+void Display1(void);
+int Empty1(void);
+int nk,jaya=0;
+struct node1
+{
+  int data;
+  struct node1* link;
+};
+struct node1* orgin=NULL;
+int len=0;
+int main()
+{
+int ch;
+printf("\tOperations in a linked list\n");
+printf("\t------ -------  ----------- \n");
+while(jaya<5)
+{
+  printf("\n 1. Append an element \n 2. Add element at begin\n 3. Add an element at after\n 4. Delete an element\n 5. Length of list\n 6. Display\n 8. Exit");    
+  scanf("%d",&ch);
+  switch(ch)
+  {
+    case 1:
+    {
+      Append();
+      break;  
+    }
+    case 2:
+    {
+      Addatbegin();
+      break;  
+    }
+    case 3:
+    {
+      Addatafter();
+      break;
+    }
+    case 4:
+    {
+      Delete();
+      Insert1(nk);
+      break;
+    }
+    case 5:
+    {
+      len=length();
+      printf("The Length of the list is:%d",len);
+      break;
+    }
+    case 6:
+    {
+      Display();
+      break;
+    }
+
+    case 8:
+    {
+      exit(1);
+      break;
+    }
+    default:
+    {
+      printf("\nEnter the correct choice\t");
+      break;
+    }
+
+  }
+  jaya++;
+}
+}
+void Append()
+{
+struct node1* temp;
+temp= (struct node1*)malloc(sizeof(struct node1));
+printf("Enter the data to be inserted\n");
+scanf("%d",&temp->data);
+temp->link=NULL;
+if(orgin==NULL)
+{
+  orgin=temp;
+}
+else
+{
+struct node1* p;
+p=orgin;
+while(p->link!=NULL)
+{
+p=p->link;
+}
+p->link=temp;
+}
+}
+void Addatbegin()
+{
+  struct node1* temp;
+  temp=(struct node1*)malloc(sizeof(struct node1));
+  printf("Enter the value of the data\n");
+  scanf("%d",&temp->data);
+  temp->link=NULL;
+  if(orgin==NULL)
+  {
+    orgin=temp;
+  }
+  else
+  {
+    temp->link=orgin;
+    orgin=temp;
+  }
+
+}
+int length()
+{
+  int count=0;
+  struct node1* temp;
+  temp=orgin;
+  while(temp!=NULL)
+  {
+    count++;
+    temp=temp->link;
+  }
+  return count;
+  }
+
+void Display()
+{
+  struct node1* temp;
+  temp=orgin;
+  if(temp==NULL)
+  {
+    printf("NO Elements\n");
+  }
+  while(temp!=NULL)
+  {
+    
+    printf("%d->",temp->data);
+    temp=temp->link;
+  }
+  printf("\n");
+}
+void Addatafter()
+{
+ int loc;
+ struct node1* temp;
+ temp=(struct node1*)malloc(sizeof(struct node1));
+ printf("Enter the Location\n");
+ scanf("%d",&loc);
+ if(loc>length())
+ {
+   printf("INVALID LOCATION\n");
+   printf("The list has %d Number of Nodes",length()); 
+ }
+ else
+ {
+   int i=1;
+   struct node1* p;
+   p=orgin;
+   while(i<loc)
+   {
+     p=p->link;
+     i++;
+   }
+   printf("Enter the data\n");
+   scanf("%d",&temp->data);
+   temp->link=NULL;
+   temp->link=p->link;
+   p->link=temp;
+ }
+}
+void Delete()
+{
+  int i=1;
+  struct node1* temp;
+  temp=orgin;
+
+  if(temp==NULL)
+  {
+    printf("The list has no elements to delete\n");
+  }
+  else 
+  {
+    
+    int d;
+    printf("Enter the location to delete\n");
+    scanf("%d",&d);
+    if(d>length())
+    {
+      printf("Invalid location\n");
+    }
+    else if (d==1)
+    {
+      temp=orgin;
+      orgin=temp->link;
+      temp->link=NULL;
+      nk = temp->data;
+      free(temp);
+      printf("deleted sucessfully\n");
+    }
+    else
+    {
+      struct node1* p=orgin;
+      struct node1* q;
+      int i=1;
+      while(i<d-1)
+      {
+        p=p->link;
+        i++;
+      }
+      q=p->link;
+      p->link=q->link;
+      q->link=NULL;
+      nk=q->data;
+      free(q);
+    }
+  }
+}
+
+
+void Insert1(int lk)
+{
+  struct node* temp;
+  temp=(struct node*)malloc(sizeof(struct node));
+  temp->data=nk;
+  temp->link=NULL;
+  if(rear==0 && front==0)
+  {
+    front=rear=temp;
+    printf("After inserting the Element in the Queue\n");
+    Display1();      
+  }
+  else
+  {
+  rear->link=temp;
+  rear=temp; 
+  printf("After inserting the Element in the Queue\n");
+  Display1(); 
+  }
+}
+
+void Display1()
+{
+  struct node* temp;
+  temp=front;
+  if(front==0 && rear==0)
+  {
+  printf("There is no elements to Display\n");
+  }
+  else
+  {
+  printf("The elements in the Queue is:\n");
+  while(temp!=NULL)
+  {
+    printf("%d\n",temp->data);
+    temp=temp->link;
+  }
+  printf("\n");
+  }
+}
+int Empty()
+{
+if(rear==0 && front==0)
+{
+  printf("Queue is Empty\n");
+  return 1;
+}
+else 
+{
+  printf("Queue is not Empty\n");
+  return 0;
+}
+}
