@@ -1,0 +1,108 @@
+/*binary search using linked list */
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node* next;
+};
+struct Node *root = NULL;
+ void insert(int x)
+{
+  struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+  temp->data = x;
+  temp->next = NULL;
+  if(root == NULL)
+  {
+      root = temp;
+  }
+  else
+  {
+      struct Node* t = root;
+      while(t ->next != NULL)
+      {
+          t = t->next;
+      }
+      t ->next = temp;
+  }
+}
+
+struct Node* middle(struct Node* start,struct Node* last)
+{
+    if (start == NULL)
+        return NULL;
+
+    struct Node* slow = start;
+    struct Node* fast = start -> next;
+
+    while (fast != last)
+    {
+        fast = fast -> next;
+        if (fast != last)
+        {
+            slow = slow -> next;
+            fast = fast -> next;
+        }
+    }
+
+    return slow;
+}
+
+// Function for implementing the Binary
+// Search on linked list
+struct Node* binarySearch(struct Node *head, int value)
+{
+    struct Node* start = head;
+    struct Node* last = NULL;
+
+    do
+    {
+        // Find middle
+        struct Node* mid = middle(start, last);
+
+        // If middle is empty
+        if (mid == NULL)
+            return NULL;
+
+        // If value is present at middle
+        if (mid -> data == value)
+            return mid;
+
+        // If value is more than mid
+        else if (mid -> data < value)
+            start = mid -> next;
+
+        // If the value is less than mid.
+        else
+            last = mid;
+
+    } while (last == NULL ||
+             last != start);
+
+    // value not present
+    return NULL;
+}
+
+// Driver Code
+int main()
+{
+    int count = 0,a,n;
+    printf("How many elements you want to insert :  ");
+    scanf("%d",&n);
+    printf("Enter elements to insert in to list:\n");
+    do
+    {
+        scanf("%d",&a);
+        insert(a);
+        count++;
+    }while(count < n);
+    int value;
+    printf("Enter element to search :  ");
+    scanf("%d",&value);
+    if (binarySearch(root, value) == NULL)
+        printf("Value not present\n");
+    else
+        printf("Present");
+    return 0;
+}
