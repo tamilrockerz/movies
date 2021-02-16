@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+void insert(int);
+void forin();
+void print();
+struct name
+{
+int data;
+struct name* link;
+};
+struct name* arr[10];
+int main()
+{
+ int e;
+ printf("Enter the elements in the array");
+ forin(e);
+ for(int i=0;i<5;i++)
+ {
+ scanf("%d",&e);
+ insert(e);
+ }
+ print();
+}
+void forin()
+{
+ for(int i=0;i<10;i++)
+ {
+ arr[i]=NULL;
+ }
+}
+void insert(int i)
+{
+int key;
+struct name * temp;
+temp=(struct name*)malloc(sizeof(struct name));
+temp->data=i;
+temp->link=NULL;
+key=i%10;
+if(arr[key]==NULL)
+{
+ arr[key]=temp;
+}
+else
+{
+struct name*t=arr[key];
+while(t->link!=NULL)
+{
+ t=t->link;
+}
+t->link=temp;
+}
+}
+void print()
+{
+ struct name *temp;
+ for(int i=0;i<10;i++)
+ {
+ printf("arr[%d] ",i);
+ temp=arr[i];
+ while(temp!=NULL)
+ {
+ printf("%d-> ",temp->data);
+ temp=temp->link;
+ }
+ printf("NULL\n");
+ }
+}
